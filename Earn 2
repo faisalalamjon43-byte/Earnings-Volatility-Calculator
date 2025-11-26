@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<style>
+body { font-family: Arial; padding:20px; max-width:350px; margin:auto; }
+input, button { width:100%; padding:10px; margin-top:15px; }
+#msg { margin-top:20px; padding:10px; background:#d7ffd7; display:none; }
+</style>
+</head>
+<body>
+
+<h2>Admin Earning Setter</h2>
+
+<input id="id" placeholder="User ID">
+<input id="earn" placeholder="Earnings (₹)">
+<input id="task" placeholder="Tasks Completed">
+
+<button onclick="save()">Save</button>
+
+<div id="msg">Saved Successfully</div>
+
+<script>
+async function save() {
+    let data = await fetch("./data.json").then(r => r.json());
+
+    data[id.value] = {
+        earnings: earn.value,
+        tasks: task.value
+    };
+
+    await fetch("data.json", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data, null, 2)
+    });
+
+    msg.style.display = "block";
+    setTimeout(() => msg.style.display="none", 2000);
+}
+</script>
+
+</body>
+</html>
